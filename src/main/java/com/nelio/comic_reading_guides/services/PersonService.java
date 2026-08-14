@@ -18,4 +18,7 @@ public interface PersonService {
     PersonEntity partialUpdate(Long id, PersonEntity personEntity);
 
     void delete(Long id);
+
+    PersonEntity findOrCreateByName(PersonEntity personEntity);
+
 }

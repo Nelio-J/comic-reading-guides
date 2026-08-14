@@ -15,8 +15,8 @@ import java.util.Optional;
 @RestController
 public class PersonController {
 
-    private PersonService personService;
-    private Mapper<PersonEntity, PersonDto> personMapper;
+    private final PersonService personService;
+    private final Mapper<PersonEntity, PersonDto> personMapper;
 
     public PersonController(PersonService personService, Mapper<PersonEntity, PersonDto> personMapper) {
         this.personService = personService;
@@ -24,8 +24,8 @@ public class PersonController {
     }
 
     @PostMapping(path = "/persons")
-    public ResponseEntity<PersonDto> createPerson(@RequestBody PersonDto person) {
-        PersonEntity personEntity = personMapper.mapFrom(person);
+    public ResponseEntity<PersonDto> createPerson(@RequestBody PersonDto personDto) {
+        PersonEntity personEntity = personMapper.mapFrom(personDto);
         PersonEntity savedPersonEntity = personService.save(personEntity);
         return new ResponseEntity<>(personMapper.mapTo(savedPersonEntity), HttpStatus.CREATED);
     }
@@ -37,7 +37,7 @@ public class PersonController {
     }
 
     @GetMapping(path = "/persons/{id}")
-    public ResponseEntity<PersonDto> getAllPersons(@PathVariable("id") Long id) {
+    public ResponseEntity<PersonDto> getPerson(@PathVariable("id") Long id) {
         Optional<PersonEntity> foundPerson = personService.findOne(id);
         return foundPerson.map(PersonEntity -> {
             PersonDto personDto = personMapper.mapTo(PersonEntity);
@@ -57,7 +57,7 @@ public class PersonController {
         return new ResponseEntity<>(personMapper.mapTo(updatedPersonEntity), HttpStatus.OK);
     }
 
-    @PatchMapping(path = "persons/{id}")
+    @PatchMapping(path = "/persons/{id}")
     public ResponseEntity<PersonDto> partialUpdatePerson(@PathVariable("id") Long id, @RequestBody PersonDto personDto) {
         if(!personService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -69,7 +69,7 @@ public class PersonController {
         return new  ResponseEntity<>(personMapper.mapTo(updatedPersonEntity), HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "persons/{id}")
+    @DeleteMapping(path = "/persons/{id}")
     public ResponseEntity<PersonDto> deletePerson(@PathVariable("id") Long id) {
         personService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

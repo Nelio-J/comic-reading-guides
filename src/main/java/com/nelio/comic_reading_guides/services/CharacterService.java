@@ -18,4 +18,7 @@ public interface CharacterService {
     CharacterEntity partialUpdate(Long id, CharacterEntity characterEntity);
 
     void delete(Long id);
+
+    CharacterEntity findOrCreateByName(CharacterEntity characterEntity);
+
 }

@@ -39,6 +39,7 @@ public class PersonControllerIntegrationTests {
     @Test
     public void testThatCreatePersonReturnsHttp201Created() throws Exception {
         PersonDto testPersonA = TestDataUtil.createTestPersonDtoA();
+        testPersonA.setId(null);
         String json = objectMapper.writeValueAsString(testPersonA);
 
         mockMvc.perform(
@@ -53,6 +54,7 @@ public class PersonControllerIntegrationTests {
     @Test
     public void testThatCreatePersonReturnsSavedPerson() throws Exception {
         PersonDto testPersonA = TestDataUtil.createTestPersonDtoA();
+        testPersonA.setId(null);
         String json = objectMapper.writeValueAsString(testPersonA);
 
         mockMvc.perform(
@@ -176,7 +178,7 @@ public class PersonControllerIntegrationTests {
         PersonEntity savedPerson = personService.save(testPersonA);
 
         PersonDto testPersonDtoA = TestDataUtil.createTestPersonDtoA();
-        testPersonA.setName("Steve Ditko");
+        testPersonDtoA.setName("Steve Ditko");
         String json = objectMapper.writeValueAsString(testPersonDtoA);
 
         mockMvc.perform(

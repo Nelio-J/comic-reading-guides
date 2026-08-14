@@ -15,8 +15,8 @@ import java.util.Optional;
 @RestController
 public class CharacterController {
 
-    private CharacterService characterService;
-    private Mapper<CharacterEntity, CharacterDto> characterMapper;
+    private final CharacterService characterService;
+    private final Mapper<CharacterEntity, CharacterDto> characterMapper;
 
     public CharacterController(CharacterService characterService, Mapper<CharacterEntity, CharacterDto> characterMapper) {
         this.characterService = characterService;
@@ -24,8 +24,8 @@ public class CharacterController {
     }
 
     @PostMapping(path = "/characters")
-    public ResponseEntity<CharacterDto> createCharacter(@RequestBody CharacterDto character) {
-        CharacterEntity characterEntity = characterMapper.mapFrom(character);
+    public ResponseEntity<CharacterDto> createCharacter(@RequestBody CharacterDto characterDto) {
+        CharacterEntity characterEntity = characterMapper.mapFrom(characterDto);
         CharacterEntity savedCharacterEntity = characterService.save(characterEntity);
         return new ResponseEntity<>(characterMapper.mapTo(savedCharacterEntity), HttpStatus.CREATED);
     }
@@ -37,7 +37,7 @@ public class CharacterController {
     }
 
     @GetMapping(path = "/characters/{id}")
-    public ResponseEntity<CharacterDto> getAllCharacters(@PathVariable("id") Long id) {
+    public ResponseEntity<CharacterDto> getCharacter(@PathVariable("id") Long id) {
         Optional<CharacterEntity> foundCharacter = characterService.findOne(id);
         return foundCharacter.map(CharacterEntity -> {
             CharacterDto characterDto = characterMapper.mapTo(CharacterEntity);
@@ -57,7 +57,7 @@ public class CharacterController {
         return new ResponseEntity<>(characterMapper.mapTo(updatedCharacterEntity), HttpStatus.OK);
     }
 
-    @PatchMapping(path = "characters/{id}")
+    @PatchMapping(path = "/characters/{id}")
     public ResponseEntity<CharacterDto> partialUpdateCharacter(@PathVariable("id") Long id, @RequestBody CharacterDto characterDto) {
         if(!characterService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -69,7 +69,7 @@ public class CharacterController {
         return new  ResponseEntity<>(characterMapper.mapTo(updatedCharacterEntity), HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "characters/{id}")
+    @DeleteMapping(path = "/characters/{id}")
     public ResponseEntity<CharacterDto> deleteCharacter(@PathVariable("id") Long id) {
         characterService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
