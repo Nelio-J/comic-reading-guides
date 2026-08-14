@@ -1,5 +1,6 @@
 package com.nelio.comic_reading_guides.services;
 
+import com.nelio.comic_reading_guides.domain.dto.ComicDto;
 import com.nelio.comic_reading_guides.domain.entities.ComicEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
