@@ -19,7 +19,7 @@ public class ComicDto {
 
     private String publisher;
 
-    private int year;
+    private Integer publicationYear;
 
     private Set<PersonDto> writers;
 

@@ -8,11 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CharacterServiceImpl implements CharacterService {
 
-    private CharacterRepository characterRepository;
+    private final CharacterRepository characterRepository;
 
     public CharacterServiceImpl(CharacterRepository characterRepository) {
         this.characterRepository = characterRepository;
@@ -50,4 +52,11 @@ public class CharacterServiceImpl implements CharacterService {
     public void delete(Long id) {
         characterRepository.deleteById(id);
     }
+
+    @Override
+    public CharacterEntity findOrCreateByName(CharacterEntity characterEntity) {
+        return characterRepository.findByName(characterEntity.getName())
+                .orElseGet(() ->  characterRepository.save(characterEntity));
+    }
+
 }

@@ -1,9 +1,13 @@
 package com.nelio.comic_reading_guides;
 
 import com.nelio.comic_reading_guides.domain.dto.CharacterDto;
+import com.nelio.comic_reading_guides.domain.dto.ComicDto;
 import com.nelio.comic_reading_guides.domain.dto.PersonDto;
 import com.nelio.comic_reading_guides.domain.entities.CharacterEntity;
+import com.nelio.comic_reading_guides.domain.entities.ComicEntity;
 import com.nelio.comic_reading_guides.domain.entities.PersonEntity;
+
+import java.util.Set;
 
 public final class TestDataUtil {
     private TestDataUtil() {
@@ -56,4 +60,49 @@ public final class TestDataUtil {
                 .name("Mark Bagley")
                 .build();
     }
+
+    public static ComicEntity createTestComicEntityA() {
+        return ComicEntity.builder()
+                .title("Spider-Man: Life Story")
+                .publisher("Marvel Comics")
+                .publicationYear(2019)
+                .writers(Set.of(createTestPersonEntityA()))
+                .artists(Set.of(createTestPersonEntityB()))
+                .characters(Set.of(createTestCharacterEntityA()))
+                .build();
+    }
+
+    public static ComicDto createTestComicDtoA() {
+        return ComicDto.builder()
+                .title("Spider-Man: Life Story")
+                .publisher("Marvel Comics")
+                .publicationYear(2019)
+                .writers(Set.of(createTestPersonDtoA()))
+                .artists(Set.of(createTestPersonDtoB()))
+                .characters(Set.of(createTestCharacterDtoA()))
+                .build();
+    }
+
+    public static ComicEntity createTestComicEntityB() {
+        return ComicEntity.builder()
+                .title("Absolute Batman")
+                .publisher("DC Comics")
+                .publicationYear(2024)
+                .writers(Set.of(createTestPersonEntityB()))
+                .artists(Set.of(createTestPersonEntityA()))
+                .characters(Set.of(createTestCharacterEntityB()))
+                .build();
+    }
+
+    public static ComicDto createTestComicDtoB() {
+        return ComicDto.builder()
+                .title("Absolute Batman")
+                .publisher("DC Comics")
+                .publicationYear(2024)
+                .writers(Set.of(createTestPersonDtoB()))
+                .artists(Set.of(createTestPersonDtoA()))
+                .characters(Set.of(createTestCharacterDtoB()))
+                .build();
+    }
+
 }

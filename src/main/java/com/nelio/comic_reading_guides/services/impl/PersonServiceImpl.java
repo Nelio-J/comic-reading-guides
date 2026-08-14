@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class PersonServiceImpl implements PersonService {
 
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     public PersonServiceImpl(PersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -50,4 +50,11 @@ public class PersonServiceImpl implements PersonService {
     public void delete(Long id) {
         personRepository.deleteById(id);
     }
+
+    @Override
+    public PersonEntity findOrCreateByName(PersonEntity personEntity) {
+        return personRepository.findByName(personEntity.getName())
+                        .orElseGet(() -> personRepository.save(personEntity));
+    }
+
 }

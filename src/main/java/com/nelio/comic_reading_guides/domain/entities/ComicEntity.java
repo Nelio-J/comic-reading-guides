@@ -24,29 +24,29 @@ public class ComicEntity {
 
     private String publisher;
 
-    private int year;
+    private Integer publicationYear;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
             name = "comic_writers",
-            joinColumns = @JoinColumn(name = "comic_id"),
-            inverseJoinColumns = @JoinColumn(name = "person_id")
+            joinColumns = @JoinColumn(name = "comic_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id", referencedColumnName = "id")
     )
     private Set<PersonEntity> writers;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
             name = "comic_artists",
-            joinColumns = @JoinColumn(name = "comic_id"),
-            inverseJoinColumns = @JoinColumn(name = "person_id")
+            joinColumns = @JoinColumn(name = "comic_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id", referencedColumnName = "id")
     )
     private Set<PersonEntity> artists;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
             name = "comic_characters",
-            joinColumns = @JoinColumn(name = "comic_id"),
-            inverseJoinColumns = @JoinColumn(name = "character_id")
+            joinColumns = @JoinColumn(name = "comic_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "character_id", referencedColumnName = "id")
     )
     private Set<CharacterEntity> characters;
 
