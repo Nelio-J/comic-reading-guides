@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ComicMapperImpl implements Mapper<ComicEntity, ComicDto> {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public ComicMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;

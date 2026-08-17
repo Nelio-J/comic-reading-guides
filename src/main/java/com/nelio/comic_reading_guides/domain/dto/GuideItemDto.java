@@ -13,10 +13,8 @@ public class GuideItemDto {
 
     private Long id;
 
-    private int position;
+    private Integer position;
 
-    private GuideDto guide;
-
-    private ComicDto comic;
+    private Long comic;
 
 }

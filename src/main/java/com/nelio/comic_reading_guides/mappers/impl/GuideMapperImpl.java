@@ -6,18 +6,38 @@ import com.nelio.comic_reading_guides.mappers.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 @Component
 public class GuideMapperImpl implements Mapper<GuideEntity, GuideDto> {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+    private final GuideItemMapperImpl guideItemMapper;
 
-    public GuideMapperImpl(ModelMapper modelMapper) {
+    public GuideMapperImpl(ModelMapper modelMapper, GuideItemMapperImpl guideItemMapper) {
         this.modelMapper = modelMapper;
+        this.guideItemMapper = guideItemMapper;
+
+        modelMapper.typeMap(
+                GuideDto.class,
+                GuideEntity.class
+                ).addMappings(mapper ->
+                mapper.skip(GuideEntity::setItems)
+        );
     }
 
+    //Since guides use a list of GuideItems, we need to call the GuideItemMapper to set the items
     @Override
     public GuideDto mapTo(GuideEntity guideEntity) {
-        return modelMapper.map(guideEntity, GuideDto.class);
+        GuideDto guideDto = modelMapper.map(guideEntity, GuideDto.class);
+        guideDto.setItems(
+                guideEntity.getItems()
+                        .stream()
+                        .map(guideItemMapper::mapTo)
+                        .collect(Collectors.toList())
+        );
+
+        return guideDto;
     }
 
     @Override

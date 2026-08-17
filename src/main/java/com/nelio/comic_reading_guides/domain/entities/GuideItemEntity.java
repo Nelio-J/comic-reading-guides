@@ -1,10 +1,7 @@
 package com.nelio.comic_reading_guides.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -21,11 +18,11 @@ public class GuideItemEntity {
     private int position;
 
     @ManyToOne
-    @JoinColumn(name = "guide_id")
+    @JoinColumn(name = "guide_id", nullable = false)
     private GuideEntity guide;
 
     @ManyToOne
-    @JoinColumn(name = "comic_id")
+    @JoinColumn(name = "comic_id", nullable = false)
     private ComicEntity comic;
 
 }
