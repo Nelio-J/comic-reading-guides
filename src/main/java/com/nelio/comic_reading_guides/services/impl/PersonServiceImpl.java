@@ -1,6 +1,7 @@
 package com.nelio.comic_reading_guides.services.impl;
 
 import com.nelio.comic_reading_guides.domain.entities.PersonEntity;
+import com.nelio.comic_reading_guides.exceptions.ResourceNotFoundException;
 import com.nelio.comic_reading_guides.repositories.PersonRepository;
 import com.nelio.comic_reading_guides.services.PersonService;
 import org.springframework.data.domain.Page;
@@ -43,7 +44,7 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.findById(id).map(existingPerson -> {
             Optional.ofNullable(personEntity.getName()).ifPresent(existingPerson::setName);
             return personRepository.save(existingPerson);
-        }).orElseThrow(() -> new RuntimeException("Person not found"));
+        }).orElseThrow(() -> new ResourceNotFoundException("Person not found"));
     }
 
     @Override

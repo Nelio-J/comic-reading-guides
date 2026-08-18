@@ -4,6 +4,7 @@ import com.nelio.comic_reading_guides.domain.dto.GuideItemDto;
 import com.nelio.comic_reading_guides.domain.entities.ComicEntity;
 import com.nelio.comic_reading_guides.domain.entities.GuideEntity;
 import com.nelio.comic_reading_guides.domain.entities.GuideItemEntity;
+import com.nelio.comic_reading_guides.exceptions.ResourceNotFoundException;
 import com.nelio.comic_reading_guides.repositories.GuideItemRepository;
 import com.nelio.comic_reading_guides.services.ComicService;
 import com.nelio.comic_reading_guides.services.GuideItemService;
@@ -29,10 +30,11 @@ public class GuideItemServiceImpl implements GuideItemService {
     }
 
     @Override
+    @Transactional
     public GuideItemEntity save(Long guideId, GuideItemDto guideItemDto) {
-        GuideEntity guideEntity = guideService.findOne(guideId).orElseThrow(() -> new RuntimeException("Guide not found"));
+        GuideEntity guideEntity = guideService.findOne(guideId).orElseThrow(() -> new ResourceNotFoundException("Guide not found"));
         Long comicId = guideItemDto.getComic();
-        ComicEntity comicEntity = comicService.findOne(comicId).orElseThrow(() -> new RuntimeException("Comic not found"));
+        ComicEntity comicEntity = comicService.findOne(comicId).orElseThrow(() -> new ResourceNotFoundException("Comic not found"));
 
         guideItemDto.setPosition(guideEntity.getItems().size() + 1);
 
@@ -48,23 +50,23 @@ public class GuideItemServiceImpl implements GuideItemService {
 
     @Override
     public Page<GuideItemEntity> findAll(Long guideId, Pageable pageable) {
-        guideService.findOne(guideId).orElseThrow(() -> new RuntimeException("Guide not found"));
+        guideService.findOne(guideId).orElseThrow(() -> new ResourceNotFoundException("Guide not found"));
         return guideItemRepository.findByGuideIdOrderByPositionAsc(guideId, pageable);
     }
 
     @Override
     public Optional<GuideItemEntity> findOne(Long guideId, Long itemId) {
-        guideService.findOne(guideId).orElseThrow(() -> new RuntimeException("Guide not found"));
+        guideService.findOne(guideId).orElseThrow(() -> new ResourceNotFoundException("Guide not found"));
         return guideItemRepository.findByGuideIdAndId(guideId, itemId);
     }
 
     @Override
     public GuideItemEntity update(Long guideId, Long itemId, GuideItemDto guideItemDto) {
         guideItemDto.setId(itemId);
-        GuideEntity guideEntity = guideService.findOne(guideId).orElseThrow(() -> new RuntimeException("Guide not found"));
+        GuideEntity guideEntity = guideService.findOne(guideId).orElseThrow(() -> new ResourceNotFoundException("Guide not found"));
         Long comicId = guideItemDto.getComic();
-        ComicEntity comicEntity = comicService.findOne(comicId).orElseThrow(() -> new RuntimeException("Comic not found"));
-        GuideItemEntity guideItemEntity = guideItemRepository.findByGuideIdAndId(guideId, itemId).orElseThrow(() -> new RuntimeException("Guide item not found"));
+        ComicEntity comicEntity = comicService.findOne(comicId).orElseThrow(() -> new ResourceNotFoundException("Comic not found"));
+        GuideItemEntity guideItemEntity = guideItemRepository.findByGuideIdAndId(guideId, itemId).orElseThrow(() -> new ResourceNotFoundException("Guide item not found"));
 
         guideItemEntity.setPosition(guideEntity.shiftPosition(guideItemEntity.getPosition(), guideItemDto.getPosition()));
         guideItemEntity.setGuide(guideEntity);
@@ -79,15 +81,15 @@ public class GuideItemServiceImpl implements GuideItemService {
 
         return guideItemRepository.findByGuideIdAndId(guideId, itemId).map(existingGuideItem -> {
             Optional.ofNullable(guideItemDto.getPosition()).ifPresent(position -> {
-                GuideEntity guideEntity = guideService.findOne(guideId).orElseThrow(() -> new RuntimeException("Guide not found"));
+                GuideEntity guideEntity = guideService.findOne(guideId).orElseThrow(() -> new ResourceNotFoundException("Guide not found"));
                 existingGuideItem.setPosition(guideEntity.shiftPosition(existingGuideItem.getPosition(), guideItemDto.getPosition()));
             });
             Optional.ofNullable(guideItemDto.getComic()).ifPresent(comicId -> {
-                ComicEntity comicEntity = comicService.findOne(comicId).orElseThrow(() -> new RuntimeException("Comic not found"));
+                ComicEntity comicEntity = comicService.findOne(comicId).orElseThrow(() -> new ResourceNotFoundException("Comic not found"));
                 existingGuideItem.setComic(comicEntity);
             });
             return guideItemRepository.save(existingGuideItem);
-        }).orElseThrow(() -> new RuntimeException("Guide item not found"));
+        }).orElseThrow(() -> new ResourceNotFoundException("Guide item not found"));
     }
 
     //The delete method is different from other entities because we have to first check if an item is in the requested guide.

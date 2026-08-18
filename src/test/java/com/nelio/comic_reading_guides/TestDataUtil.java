@@ -1,12 +1,9 @@
 package com.nelio.comic_reading_guides;
 
-import com.nelio.comic_reading_guides.domain.dto.CharacterDto;
-import com.nelio.comic_reading_guides.domain.dto.ComicDto;
-import com.nelio.comic_reading_guides.domain.dto.PersonDto;
-import com.nelio.comic_reading_guides.domain.entities.CharacterEntity;
-import com.nelio.comic_reading_guides.domain.entities.ComicEntity;
-import com.nelio.comic_reading_guides.domain.entities.PersonEntity;
+import com.nelio.comic_reading_guides.domain.dto.*;
+import com.nelio.comic_reading_guides.domain.entities.*;
 
+import java.util.List;
 import java.util.Set;
 
 public final class TestDataUtil {
@@ -102,6 +99,64 @@ public final class TestDataUtil {
                 .writers(Set.of(createTestPersonDtoB()))
                 .artists(Set.of(createTestPersonDtoA()))
                 .characters(Set.of(createTestCharacterDtoB()))
+                .build();
+    }
+
+    public static GuideEntity createTestGuideEntityA() {
+        return GuideEntity.builder()
+                .title("Spider-Man Starter Guide")
+                .description("This is a guide for Spider-Man newcomers")
+                .build();
+    }
+
+    public static GuideDto createTestGuideDtoA() {
+        return GuideDto.builder()
+                .title("Spider-Man Starter Guide")
+                .description("This is a guide for Spider-Man newcomers")
+                .build();
+    }
+
+    public static GuideEntity createTestGuideEntityB() {
+        return GuideEntity.builder()
+                .title("Batman Starter Guide")
+                .description("This is a guide for Batman first-time readers")
+                .build();
+    }
+
+    public static GuideDto createTestGuideDtoB() {
+        return GuideDto.builder()
+                .title("Batman Starter Guide")
+                .description("This is a guide for Batman first-time readers")
+                .build();
+    }
+
+    public static GuideItemEntity createTestGuideItemEntityA() {
+        return GuideItemEntity.builder()
+                .position(1)
+                .guide(createTestGuideEntityA())
+                .comic(createTestComicEntityA())
+                .build();
+    }
+
+    public static GuideItemDto createTestGuideItemDtoA() {
+        return GuideItemDto.builder()
+                .position(1)
+                .comic(createTestComicEntityA().getId())
+                .build();
+    }
+
+    public static GuideItemEntity createTestGuideItemEntityB() {
+        return GuideItemEntity.builder()
+                .position(2)
+                .guide(createTestGuideEntityB())
+                .comic(createTestComicEntityB())
+                .build();
+    }
+
+    public static GuideItemDto createTestGuideItemDtoB() {
+        return GuideItemDto.builder()
+                .position(2)
+                .comic(createTestComicEntityB().getId())
                 .build();
     }
 

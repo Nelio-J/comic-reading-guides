@@ -2,6 +2,7 @@ package com.nelio.comic_reading_guides.services.impl;
 
 import com.nelio.comic_reading_guides.domain.entities.GuideEntity;
 import com.nelio.comic_reading_guides.domain.entities.GuideItemEntity;
+import com.nelio.comic_reading_guides.exceptions.ResourceNotFoundException;
 import com.nelio.comic_reading_guides.repositories.GuideRepository;
 import com.nelio.comic_reading_guides.services.GuideService;
 import org.springframework.data.domain.Page;
@@ -46,7 +47,7 @@ public class GuideServiceImpl implements GuideService {
             existingGuide.setDescription(guideEntity.getDescription());
 
             return guideRepository.save(existingGuide);
-        }).orElseThrow(() -> new RuntimeException("Guide not found"));
+        }).orElseThrow(() -> new ResourceNotFoundException("Guide not found"));
     }
 
     @Override
@@ -55,20 +56,12 @@ public class GuideServiceImpl implements GuideService {
             Optional.ofNullable(guideEntity.getTitle()).ifPresent(existingGuide::setTitle);
             Optional.ofNullable(guideEntity.getDescription()).ifPresent(existingGuide::setDescription);
             return guideRepository.save(existingGuide);
-        }).orElseThrow(() -> new RuntimeException("Guide not found"));
+        }).orElseThrow(() -> new ResourceNotFoundException("Guide not found"));
     }
 
     @Override
     public void delete(Long id) {
         guideRepository.deleteById(id);
     }
-
-    public void addItem(GuideItemEntity guideItemEntity) {
-
-    }
-
-//    public void removeItem(GuideItemEntity guideItemEntity) {
-//
-//    }
 
 }

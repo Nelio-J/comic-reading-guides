@@ -2,6 +2,7 @@ package com.nelio.comic_reading_guides.services.impl;
 
 
 import com.nelio.comic_reading_guides.domain.entities.ComicEntity;
+import com.nelio.comic_reading_guides.exceptions.ResourceNotFoundException;
 import com.nelio.comic_reading_guides.repositories.ComicRepository;
 import com.nelio.comic_reading_guides.services.CharacterService;
 import com.nelio.comic_reading_guides.services.ComicService;
@@ -76,7 +77,7 @@ public class ComicServiceImpl implements ComicService {
                     characters.stream().map(characterService::findOrCreateByName).collect(Collectors.toSet())
             ));
             return comicRepository.save(existingComic);
-        }).orElseThrow(() -> new RuntimeException("Comic not found!"));
+        }).orElseThrow(() -> new ResourceNotFoundException("Comic not found!"));
     }
 
     @Override

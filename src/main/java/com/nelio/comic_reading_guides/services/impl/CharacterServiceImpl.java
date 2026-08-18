@@ -1,6 +1,7 @@
 package com.nelio.comic_reading_guides.services.impl;
 
 import com.nelio.comic_reading_guides.domain.entities.CharacterEntity;
+import com.nelio.comic_reading_guides.exceptions.ResourceNotFoundException;
 import com.nelio.comic_reading_guides.repositories.CharacterRepository;
 import com.nelio.comic_reading_guides.services.CharacterService;
 import org.springframework.data.domain.Page;
@@ -43,7 +44,7 @@ public class CharacterServiceImpl implements CharacterService {
         return characterRepository.findById(id).map(existingCharacter -> {
             Optional.ofNullable(characterEntity.getName()).ifPresent(existingCharacter::setName);
             return characterRepository.save(existingCharacter);
-        }).orElseThrow(() -> new RuntimeException("Character not found"));
+        }).orElseThrow(() -> new ResourceNotFoundException("Character not found"));
     }
 
     @Override
