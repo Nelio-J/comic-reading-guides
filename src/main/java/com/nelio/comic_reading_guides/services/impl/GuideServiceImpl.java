@@ -1,7 +1,6 @@
 package com.nelio.comic_reading_guides.services.impl;
 
 import com.nelio.comic_reading_guides.domain.entities.GuideEntity;
-import com.nelio.comic_reading_guides.domain.entities.GuideItemEntity;
 import com.nelio.comic_reading_guides.exceptions.ResourceNotFoundException;
 import com.nelio.comic_reading_guides.repositories.GuideRepository;
 import com.nelio.comic_reading_guides.services.GuideService;

@@ -3,7 +3,6 @@ package com.nelio.comic_reading_guides;
 import com.nelio.comic_reading_guides.domain.dto.*;
 import com.nelio.comic_reading_guides.domain.entities.*;
 
-import java.util.List;
 import java.util.Set;
 
 public final class TestDataUtil {
